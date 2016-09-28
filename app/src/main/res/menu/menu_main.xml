@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.ibnas.altinorobot.MainActivity">
+    <item
+        android:id="@+id/bt_bluetooth"
+        android:orderInCategory="100"
+        android:title="@string/bt_connect"/>
+</menu>
