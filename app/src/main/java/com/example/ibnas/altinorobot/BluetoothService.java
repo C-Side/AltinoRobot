@@ -19,6 +19,7 @@ import java.util.UUID;
  */
 public class BluetoothService {
 
+    // write anything
     private static final String TAG = "AltinoAppService";
     private static final boolean D = true;
     private static final String NAME = "AltinoApp";
