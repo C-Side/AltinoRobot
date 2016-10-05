@@ -43,9 +43,20 @@ public class MainActivity extends AppCompatActivity {
     private Button bluetooth_search;
     private Button EXIT;
 
+    //Buttons for the motor
+    private Button bt_forward;
+    private Button bt_stop;
+    private Button bt_backward;
+    public static byte[] sendBuf_byte = new byte[28];
 
+
+    /**
+     * gets called when the object is created
+     * @param savedInstanceState I got no idea what it does
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,12 +77,60 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
             }
         });
+
+        //defines the exit button action
         EXIT = (Button) findViewById(R.id.bt_exit);
         EXIT.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 exitDialog();
             }
         });
+
+        // Defines the action of the forward button
+        bt_forward = (Button) findViewById(R.id.bt_forward); bt_forward.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                sendBuf_byte[4] = 1;
+                sendBuf_byte[5] = 2;
+                sendBuf_byte[6] = 0;
+                sendBuf_byte[7] = (byte) (300 / 256);
+                sendBuf_byte[8] = (byte) (300 % 256);
+                sendBuf_byte[9] = 0;
+                sendBuf_byte[10] = (byte) (300 / 256);
+                sendBuf_byte[11] = (byte) (300 % 256);
+                sendBuf_byte[23] = (byte) (0x03);
+                sendByte(sendBuf_byte); }
+        });
+
+        // Defines the action of the stop button
+        bt_stop = (Button) findViewById(R.id.bt_stop); bt_stop.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                sendBuf_byte[4] = 1;
+                sendBuf_byte[5] = 2;
+                sendBuf_byte[6] = 0;
+                sendBuf_byte[7] = 0;
+                sendBuf_byte[8] = 0;
+                sendBuf_byte[9] = 0;
+                sendBuf_byte[10] = 0;
+                sendBuf_byte[11] = 0;
+                sendBuf_byte[23] = 0;
+                sendByte(sendBuf_byte); }
+        });
+
+        // Defines the action of the backward button
+        bt_backward = (Button) findViewById(R.id.bt_backward); bt_backward.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                sendBuf_byte[4] = 1;
+                sendBuf_byte[5] = 2;
+                sendBuf_byte[6] = 0;
+                sendBuf_byte[7] = (byte) ((32768 + 300) / 256);
+                sendBuf_byte[8] = (byte) ((32768 + 300) % 256);
+                sendBuf_byte[9] = 0;
+                sendBuf_byte[10] = (byte) ((32768 + 300) / 256);
+                sendBuf_byte[11] = (byte) ((32768 + 300) % 256);
+                sendBuf_byte[23] = (byte) (0xC0);
+                sendByte(sendBuf_byte); }
+        });
+
     }
 
     public void onStart() {

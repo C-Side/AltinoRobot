@@ -41,4 +41,30 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Forward To Glory!!!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/bt_forward" />
+
+    <Button
+        android:text="Stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bt_forward"
+        android:layout_toEndOf="@+id/bt_bluetooth"
+        android:layout_marginStart="20dp"
+        android:id="@+id/bt_stop" />
+
+    <Button
+        android:text="Reverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bt_stop"
+        android:layout_toEndOf="@+id/bt_stop"
+        android:layout_marginStart="20dp"
+        android:id="@+id/bt_backward" />
 </RelativeLayout>
