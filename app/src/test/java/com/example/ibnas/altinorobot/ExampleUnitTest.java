@@ -1,5 +1,7 @@
 package com.example.ibnas.altinorobot;
 
+import android.widget.ToggleButton;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -9,7 +11,8 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void small_test() throws Exception {
+        MainActivity ma = new MainActivity();
+        ma.getBt_loop().setChecked(true);
     }
 }
