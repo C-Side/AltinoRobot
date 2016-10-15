@@ -51,7 +51,15 @@ public class MainActivity extends AppCompatActivity {
     private Button bt_backward, bt_led_on, bt_led_off, bt_buzz_on, bt_buzz_off;
     private ToggleButton bt_loop;
 
+    //text view for something
+    private TextView cds;
+
+    //byte buffer
     public static byte[] sendBuf_byte = new byte[28];
+    private byte[] readBuf = new byte[31];
+    private byte[] readBuf_byte = new byte[31];
+    private byte[] readBuf_byte2 = new byte[31];
+    private int cnt = 0;
 
 
     /**
@@ -89,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 exitDialog();
             }
         });
+
+        cds = (TextView) findViewById(R.id.s_cds);
 
         // Defines the action of the forward button
         bt_forward = (Button) findViewById(R.id.bt_forward);
@@ -248,6 +258,61 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * checks the data
+     */
+    public void checkData() {
+        int rx_check_sum;
+        if ((readBuf[0] == 2) && (readBuf[30] == 3) && (readBuf[1] == 31)) {
+            rx_check_sum = readBuf[0];
+            rx_check_sum = rx_check_sum + readBuf[1];
+            rx_check_sum = rx_check_sum + readBuf[3];
+            rx_check_sum = rx_check_sum + readBuf[4];
+            rx_check_sum = rx_check_sum + readBuf[5];
+            rx_check_sum = rx_check_sum + readBuf[6];
+            rx_check_sum = rx_check_sum + readBuf[7];
+            rx_check_sum = rx_check_sum + readBuf[8];
+            rx_check_sum = rx_check_sum + readBuf[9];
+            rx_check_sum = rx_check_sum + readBuf[10];
+            rx_check_sum = rx_check_sum + readBuf[11];
+            rx_check_sum = rx_check_sum + readBuf[12];
+            rx_check_sum = rx_check_sum + readBuf[13];
+            rx_check_sum = rx_check_sum + readBuf[14];
+            rx_check_sum = rx_check_sum + readBuf[15];
+            rx_check_sum = rx_check_sum + readBuf[16];
+            rx_check_sum = rx_check_sum + readBuf[17];
+            rx_check_sum = rx_check_sum + readBuf[18];
+            rx_check_sum = rx_check_sum + readBuf[19];
+            rx_check_sum = rx_check_sum + readBuf[20];
+            rx_check_sum = rx_check_sum + readBuf[21];
+            rx_check_sum = rx_check_sum + readBuf[22];
+            rx_check_sum = rx_check_sum + readBuf[23];
+            rx_check_sum = rx_check_sum + readBuf[24];
+            rx_check_sum = rx_check_sum + readBuf[25];
+            rx_check_sum = rx_check_sum + readBuf[26];
+            rx_check_sum = rx_check_sum + readBuf[27];
+            rx_check_sum = rx_check_sum + readBuf[28];
+            rx_check_sum = rx_check_sum + readBuf[29];
+            rx_check_sum = rx_check_sum + readBuf[30];
+            rx_check_sum = rx_check_sum % 256;
+            if (rx_check_sum == readBuf[2]) {
+                if(readBuf[4]==1)
+                {
+                    for(int i=7; i<28; i++) {
+                        readBuf_byte[i] = readBuf[i];
+                    }
+                }
+                else
+                {
+                    for(int i=7; i<26; i++) {
+                        readBuf_byte2[i] = readBuf[i];
+                    }
+                }
+                cds.setText(""+((readBuf_byte[25] & 0xff)*256+(readBuf_byte[26] & 0xff)));
+            }
+        }
+    }
+
     public void onStart() {
         super.onStart();
         if (D)
@@ -326,6 +391,8 @@ public class MainActivity extends AppCompatActivity {
                             mStatus.setText(R.string.status_connected_to);
                             mStatus.append(mConnectedDeviceName);
                             connectload.setVisibility(View.VISIBLE);
+                            sendBuf_byte[4] = 1;
+                            sendByte(sendBuf_byte);
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             mStatus.setText(R.string.status_connecting);
@@ -337,6 +404,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case MESSAGE_READ:
+                    readBuf = (byte[]) msg.obj;
+                    checkData();
+                    if(cnt%2==0) {
+                        sendBuf_byte[4] = 2;
+                    } else {
+                        sendBuf_byte[4] = 1;
+                    }
+                    sendByte(sendBuf_byte);
+                    cnt++;
                     break;
                 case MESSAGE_DEVICE_NAME:
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);

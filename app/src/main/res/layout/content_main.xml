@@ -113,4 +113,12 @@
         android:id="@+id/bt_loop"
         android:textOff="loop off"
         android:textOn="loop on" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        android:id="@+id/s_cds"
+        android:layout_alignTop="@+id/txtStatus"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
