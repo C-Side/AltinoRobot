@@ -121,4 +121,56 @@
         android:id="@+id/s_cds"
         android:layout_alignTop="@+id/txtStatus"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ir1"
+        android:layout_alignBottom="@+id/bt_loop"
+        android:layout_alignStart="@+id/txtStatus" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ir2"
+        android:layout_alignBaseline="@+id/ir1"
+        android:layout_alignBottom="@+id/ir1"
+        android:layout_toEndOf="@+id/bt_led_on" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ir3"
+        android:layout_alignBaseline="@+id/ir2"
+        android:layout_alignBottom="@+id/ir2"
+        android:layout_toEndOf="@+id/bt_forward" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ir4"
+        android:layout_alignBaseline="@+id/ir3"
+        android:layout_alignBottom="@+id/ir3"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ir5"
+        android:layout_alignBaseline="@+id/ir4"
+        android:layout_alignBottom="@+id/ir4"
+        android:layout_alignStart="@+id/bt_buzz_off" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ir6"
+        android:layout_alignBottom="@+id/bt_loop"
+        android:layout_toEndOf="@+id/bt_backward" />
 </RelativeLayout>

@@ -52,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton bt_loop;
 
     //text view for something
-    private TextView cds;
+    private TextView cds, ir1, ir2, ir3, ir4, ir5, ir6;
+
+    //fields for the sensor values
+    private int value_s1, value_s2;
 
     //byte buffer
     public static byte[] sendBuf_byte = new byte[28];
@@ -97,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 exitDialog();
             }
         });
-
-        cds = (TextView) findViewById(R.id.s_cds);
 
         // Defines the action of the forward button
         bt_forward = (Button) findViewById(R.id.bt_forward);
@@ -222,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                         sendBuf_byte[18] = (byte) arrayDot_6[i];
                         sendBuf_byte[19] = (byte) arrayDot_7[i];
                         sendBuf_byte[20] = (byte) arrayDot_8[i];
+                        sendBuf_byte[21] = 10;
                         sendBuf_byte[22] = 0;
                         //sendBuf_byte[23] = (byte) arrayLED[i];
                         sendByte(sendBuf_byte);
@@ -256,6 +258,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        cds = (TextView) findViewById(R.id.s_cds);
+        ir1 = (TextView) findViewById(R.id.ir1);
+        ir2 = (TextView) findViewById(R.id.ir2);
+        ir3 = (TextView) findViewById(R.id.ir3);
+        ir4 = (TextView) findViewById(R.id.ir4);
+        ir5 = (TextView) findViewById(R.id.ir5);
+        ir6 = (TextView) findViewById(R.id.ir6);
     }
 
     /**
@@ -308,7 +318,15 @@ public class MainActivity extends AppCompatActivity {
                         readBuf_byte2[i] = readBuf[i];
                     }
                 }
-                cds.setText(""+((readBuf_byte[25] & 0xff)*256+(readBuf_byte[26] & 0xff)));
+                cds.setText(""+((readBuf_byte[23] & 0xff)*256+(readBuf_byte[24] & 0xff)));
+                value_s1 = (readBuf_byte[7] & 0xff)*256+(readBuf_byte[8] & 0xff);
+                ir1.setText(value_s1);
+                value_s2 = (readBuf_byte[9] & 0xff)*256+(readBuf_byte[10] & 0xff);
+                ir2.setText(value_s2);
+                ir3.setText(""+((readBuf_byte[11] & 0xff)*256+(readBuf_byte[12] & 0xff)));
+                ir4.setText(""+((readBuf_byte[13] & 0xff)*256+(readBuf_byte[14] & 0xff)));
+                ir5.setText(""+((readBuf_byte[15] & 0xff)*256+(readBuf_byte[16] & 0xff)));
+                ir6.setText(""+((readBuf_byte[17] & 0xff)*256+(readBuf_byte[18] & 0xff)));
             }
         }
     }
