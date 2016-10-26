@@ -7,12 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +19,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -46,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private Button EXIT;
 
     //Buttons for the motor
-    private Button bt_forward;
-    private Button bt_stop;
-    private Button bt_backward, bt_led_on, bt_led_off, bt_buzz_on, bt_buzz_off;
+    private Button bt_forward, bt_stop, bt_backward, bt_up, bt_down, bt_left, bt_right, bt_horn;
     private ToggleButton bt_loop;
+
+    //seekbar for the speed
+    private SeekBar seekBar;
 
     //text view for something
     private TextView cds, ir1, ir2, ir3, ir4, ir5, ir6;
@@ -57,12 +58,17 @@ public class MainActivity extends AppCompatActivity {
     //fields for the sensor values
     private int value_s1, value_s2;
 
+    //speed for the touch buttons
+    public static int speed;
+
     //byte buffer
     public static byte[] sendBuf_byte = new byte[28];
     private byte[] readBuf = new byte[31];
     private byte[] readBuf_byte = new byte[31];
     private byte[] readBuf_byte2 = new byte[31];
     private int cnt = 0;
+
+
 
 
     /**
@@ -120,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Defines the action of the stop button
         bt_stop = (Button) findViewById(R.id.bt_stop);
-        bt_stop.setOnClickListener(new Button.OnClickListener() {
+        bt_stop.setOnClickListener(new Button.OnClickListener()  {
             public void onClick(View v) {
                 sendBuf_byte[4] = 1;
                 sendBuf_byte[5] = 2;
@@ -152,45 +158,95 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Defines the action of turning on LED
-        bt_led_on = (Button) findViewById(R.id.bt_led_on);
-        bt_led_on.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sendBuf_byte[4] = 1;
-                sendBuf_byte[23] = (byte) (0xFF);
-                sendByte(sendBuf_byte);
-            }
+        bt_up = (Button) findViewById(R.id.bt_up);
+        bt_up.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) { switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[6] = 0;
+                    sendBuf_byte[7] = (byte) (speed / 256);
+                    sendBuf_byte[8] = (byte) (speed % 256);
+                    sendBuf_byte[9] = 0;
+                    sendBuf_byte[10] = (byte) (speed / 256);
+                    sendBuf_byte[11] = (byte) (speed % 256);
+                    sendBuf_byte[23] = (byte) (0x03);
+                    sendByte(sendBuf_byte);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[6] = 0;
+                    sendBuf_byte[7] = 0;
+                    sendBuf_byte[8] = 0;
+                    sendBuf_byte[9] = 0;
+                    sendBuf_byte[10] = 0;
+                    sendBuf_byte[11] = 0;
+                    sendByte(sendBuf_byte);
+                    break; }
+                return false; }
         });
 
-        // Defines the action of turning off LED
-        bt_led_off = (Button) findViewById(R.id.bt_led_off);
-        bt_led_off.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sendBuf_byte[4] = 1;
-                sendBuf_byte[23] = (byte) (0);
-                sendByte(sendBuf_byte);
-            }
+        bt_down = (Button) findViewById(R.id.bt_down);
+        bt_down.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[6] = 0;
+                    sendBuf_byte[7] = (byte) ((32768 +speed) / 256);
+                    sendBuf_byte[8] = (byte) ((32768 +speed) % 256);
+                    sendBuf_byte[9] = 0;
+                    sendBuf_byte[10] = (byte) ((32768 +speed) / 256);
+                    sendBuf_byte[11] = (byte) ((32768 +speed) % 256);
+                    sendBuf_byte[23] = (byte) (0x0c);
+                    sendByte(sendBuf_byte);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[6] = 0;
+                    sendBuf_byte[7] = 0;
+                    sendBuf_byte[8] = 0;
+                    sendBuf_byte[9] = 0;
+                    sendBuf_byte[10] = 0;
+                    sendBuf_byte[11] = 0;
+                    sendByte(sendBuf_byte);
+                    break; }
+                return false; }
         });
 
-        // Defines the action of turning on Buzzer
-        bt_buzz_on = (Button) findViewById(R.id.bt_buzz_on);
-        bt_buzz_on.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sendBuf_byte[4] = 1;
-                sendBuf_byte[22] = 37;
-                sendByte(sendBuf_byte);
-            }
+        bt_left = (Button) findViewById(R.id.bt_left);
+        bt_left.setOnTouchListener(new View.OnTouchListener() { public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[5] = 1;
+                    sendBuf_byte[23] = (byte) (0xa0);
+                    sendByte(sendBuf_byte);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[5] = 2;
+                    sendByte(sendBuf_byte);
+                    break; }
+            return false; }
         });
 
-        // Defines the action of turning on Buzzer
-        bt_buzz_off = (Button) findViewById(R.id.bt_buzz_off);
-        bt_buzz_off.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sendBuf_byte[4] = 1;
-                sendBuf_byte[22] = 0;
-                sendByte(sendBuf_byte);
-            }
+        bt_right = (Button) findViewById(R.id.bt_right);
+        bt_right.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) { switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[5] = 3;
+                    sendBuf_byte[23] = (byte) (0x50);
+                    sendByte(sendBuf_byte);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[5] = 2;
+                    sendByte(sendBuf_byte);
+                    break; }
+                return false; }
         });
+
 
         // Defines the action of turning on Buzzer
         bt_loop = (ToggleButton) findViewById(R.id.bt_loop);
@@ -203,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (bt_loop_check) {
-                        if (value_s2 < 50 && !driving) {
+                        if (!driving) {
                             sendBuf_byte[4] = 1;
                             sendBuf_byte[5] = 2;
                             sendBuf_byte[6] = 0;
@@ -215,18 +271,8 @@ public class MainActivity extends AppCompatActivity {
                             sendBuf_byte[23] = (byte) (0x03);
                             sendByte(sendBuf_byte);
                             driving = true;
-                        } else if (value_s2 >= 50 && driving) {
-                            sendBuf_byte[4] = 1;
-                            sendBuf_byte[5] = 2;
-                            sendBuf_byte[6] = 0;
-                            sendBuf_byte[7] = (byte) ((32768 + 240) / 256);
-                            sendBuf_byte[8] = (byte) ((32768 + 240) % 256);
-                            sendBuf_byte[9] = 0;
-                            sendBuf_byte[10] = (byte) ((32768 + 240) / 256);
-                            sendBuf_byte[11] = (byte) ((32768 + 240) % 256);
-                            sendBuf_byte[23] = (byte) (0xC0);
-                            sendByte(sendBuf_byte);
-                            
+                            handler.postDelayed(this,1000);
+                        } else if (driving) {
                             sendBuf_byte[4] = 1;
                             sendBuf_byte[5] = 2;
                             sendBuf_byte[6] = 0;
@@ -237,9 +283,10 @@ public class MainActivity extends AppCompatActivity {
                             sendBuf_byte[11] = 0;
                             sendBuf_byte[23] = 0;
                             sendByte(sendBuf_byte);
-                            driving = false;
+
+                            handler.postDelayed(this,10);
                         }
-                        handler.postDelayed(this,10);
+
                     }
                 }
             };
@@ -256,6 +303,31 @@ public class MainActivity extends AppCompatActivity {
                     bt_stop.performClick();
                 }
             }
+        });
+
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                speed = progress;
+            } });
+
+        bt_horn = (Button) findViewById(R.id.bt_horn);
+        bt_horn.setOnTouchListener(new View.OnTouchListener()
+        { public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[22] = 1;
+                    sendByte(sendBuf_byte);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    sendBuf_byte[4] = 1;
+                    sendBuf_byte[22] = 0;
+                    sendByte(sendBuf_byte);
+                    break; }
+            return false; }
         });
 
         cds = (TextView) findViewById(R.id.s_cds);
@@ -319,13 +391,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 cds.setText(""+((readBuf_byte[23] & 0xff)*256+(readBuf_byte[24] & 0xff)));
                 value_s1 = (readBuf_byte[7] & 0xff)*256+(readBuf_byte[8] & 0xff);
-                ir1.setText(""+(value_s1));
+                ir1.setText("IR 1:"+(value_s1));
                 value_s2 = (readBuf_byte[9] & 0xff)*256+(readBuf_byte[10] & 0xff);
-                ir2.setText(""+(value_s2));
-                ir3.setText(""+((readBuf_byte[11] & 0xff)*256+(readBuf_byte[12] & 0xff)));
-                ir4.setText(""+((readBuf_byte[13] & 0xff)*256+(readBuf_byte[14] & 0xff)));
-                ir5.setText(""+((readBuf_byte[15] & 0xff)*256+(readBuf_byte[16] & 0xff)));
-                ir6.setText(""+((readBuf_byte[17] & 0xff)*256+(readBuf_byte[18] & 0xff)));
+                ir2.setText("IR 2:"+(value_s2));
+                ir3.setText("IR 3:"+((readBuf_byte[11] & 0xff)*256+(readBuf_byte[12] & 0xff)));
+                ir4.setText("IR 4:"+((readBuf_byte[13] & 0xff)*256+(readBuf_byte[14] & 0xff)));
+                ir5.setText("IR 5:"+((readBuf_byte[15] & 0xff)*256+(readBuf_byte[16] & 0xff)));
+                ir6.setText("IR 6:"+((readBuf_byte[17] & 0xff)*256+(readBuf_byte[18] & 0xff)));
             }
         }
     }

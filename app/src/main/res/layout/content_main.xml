@@ -51,59 +51,6 @@
         android:layout_alignParentStart="true"
         android:id="@+id/bt_forward" />
 
-    <Button
-        android:text="Stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/bt_forward"
-        android:layout_toEndOf="@+id/bt_bluetooth"
-        android:layout_marginStart="20dp"
-        android:id="@+id/bt_stop" />
-
-    <Button
-        android:text="Reverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/bt_stop"
-        android:layout_toEndOf="@+id/bt_stop"
-        android:layout_marginStart="20dp"
-        android:id="@+id/bt_backward" />
-
-    <Button
-        android:text="BUZZ OFF"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bt_buzz_off"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/bt_backward"
-        android:layout_marginStart="13dp" />
-
-    <Button
-        android:text="LED OFF"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bt_led_off"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/bt_led_on" />
-
-    <Button
-        android:text="LED ON"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bt_led_on"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:text="BUZZ ON"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bt_buzz_on"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/bt_stop" />
-
     <ToggleButton
         android:text="ToggleButton"
         android:layout_width="wrap_content"
@@ -128,7 +75,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/ir1"
         android:layout_alignBottom="@+id/bt_loop"
-        android:layout_alignStart="@+id/txtStatus" />
+        android:layout_alignStart="@+id/txtStatus"
+        android:padding="10dp"/>
 
     <TextView
         android:text="TextView"
@@ -137,7 +85,8 @@
         android:id="@+id/ir2"
         android:layout_alignBaseline="@+id/ir1"
         android:layout_alignBottom="@+id/ir1"
-        android:layout_toEndOf="@+id/bt_led_on" />
+        android:layout_toEndOf="@+id/ir1"
+        android:padding="10dp"/>
 
     <TextView
         android:text="TextView"
@@ -146,7 +95,8 @@
         android:id="@+id/ir3"
         android:layout_alignBaseline="@+id/ir2"
         android:layout_alignBottom="@+id/ir2"
-        android:layout_toEndOf="@+id/bt_forward" />
+        android:layout_toEndOf="@+id/ir2"
+        android:padding="10dp" />
 
     <TextView
         android:text="TextView"
@@ -155,7 +105,8 @@
         android:id="@+id/ir4"
         android:layout_alignBaseline="@+id/ir3"
         android:layout_alignBottom="@+id/ir3"
-        android:layout_centerHorizontal="true" />
+        android:layout_toEndOf="@id/ir3"
+        android:padding="10dp" />
 
     <TextView
         android:text="TextView"
@@ -164,13 +115,87 @@
         android:id="@+id/ir5"
         android:layout_alignBaseline="@+id/ir4"
         android:layout_alignBottom="@+id/ir4"
-        android:layout_alignStart="@+id/bt_buzz_off" />
+        android:layout_toEndOf="@+id/ir4"
+        android:padding="10dp" />
 
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ir6"
-        android:layout_alignBottom="@+id/bt_loop"
-        android:layout_toEndOf="@+id/bt_backward" />
+        android:layout_alignBaseline="@+id/ir5"
+        android:layout_alignBottom="@+id/ir5"
+        android:layout_toEndOf="@+id/ir5"
+        android:padding="10dp" />
+
+    <Button
+        android:text="Stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:id="@+id/bt_stop"
+        android:layout_below="@+id/bt_forward"
+        android:layout_alignStart="@+id/ir1" />
+
+    <Button
+        android:text="Reverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_backward"
+        android:layout_below="@+id/bt_stop"
+        android:layout_alignStart="@+id/bt_stop" />
+
+    <Button
+        android:text="Up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_up"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignBaseline="@+id/bt_forward"
+        android:layout_alignBottom="@+id/bt_forward"
+        android:layout_toStartOf="@+id/ir6" />
+
+    <Button
+        android:text="Right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_right"
+        android:layout_below="@+id/bt_up"
+        android:layout_toStartOf="@+id/bt_exit" />
+
+    <Button
+        android:text="Down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_down"
+        android:layout_below="@+id/bt_right"
+        android:layout_alignStart="@+id/bt_up" />
+
+    <Button
+        android:text="Left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_left"
+        android:layout_below="@+id/bt_up"
+        android:layout_toStartOf="@+id/ir5"
+        android:layout_marginEnd="17dp" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:max="500"
+        android:progress="250"
+        android:layout_above="@+id/bt_up"
+        android:layout_alignEnd="@+id/ir6"
+        android:layout_alignStart="@+id/bt_left" />
+
+    <Button
+        android:text="HONK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekBar"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/bt_horn" />
 </RelativeLayout>
